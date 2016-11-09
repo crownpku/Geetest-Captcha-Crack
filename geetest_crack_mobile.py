@@ -92,7 +92,9 @@ def geettest_crack(driver, screenshot_path = ''):
 
     trial_count = 0
     while trial_count < 5:
+        # FireFox:
         # element = driver.find_element_by_xpath('//*[local-name() = "circle"][@style="fill: rgb(255, 255, 255); stroke-width: 1.5;"]')
+        # PhantomJS:
         element = driver.find_element_by_xpath('//*[local-name() = "circle"][@style="fill: #ffffff; stroke-width: 1.5px;"]')
         time.sleep(3)
         driver.save_screenshot(screenshot_path + 'screenshot1.png')
