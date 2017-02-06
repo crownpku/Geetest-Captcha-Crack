@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from PIL import Image
 import PIL.Image as image
 import time,re,cStringIO,urllib2,random
-from update_proxy_ip_kuaidaili_qiduowei import *
 
 
 
