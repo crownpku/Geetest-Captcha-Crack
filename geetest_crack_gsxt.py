@@ -40,7 +40,7 @@ class crack_picture(object):
 
     def pictures_recover(self):
         xpos = self.judge(self.picture_recover(self.img1, 'img1.jpg'), self.picture_recover(self.img2, 'img2.jpg')) - 6
-        return self.geetest_track(xpos)
+        return self.geetest_track_int(xpos) #_int, _float, _test
 
 
     def picture_recover(self, img, name):
@@ -59,7 +59,7 @@ class crack_picture(object):
         im_new.save(name)
         return im_new
 
-    def geetest_track(self, distance):
+    def geetest_track_float(self, distance): #Fail, cannot move non-int pixel steps
         print "generating track..."
         come_back = random.uniform(-2,3)
         cur_loc = 0
