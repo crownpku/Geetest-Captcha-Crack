@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 from bs4 import BeautifulSoup
-
+debug = True
 
 class crack_picture(object):
     def __init__(self, img_url1, img_url2):
@@ -59,49 +59,144 @@ class crack_picture(object):
         im_new.save(name)
         return im_new
 
-
     def geetest_track(self, distance):
-        come_back = random.randint(-2,5)
+        print "generating track..."
+        come_back = random.uniform(-2,3)
         cur_loc = 0
         track_list = []
+        magic_ratio = 1
+        if distance < 50:
+            magic_ratio = 1.
+        else:
+            magic_ratio = distance/50.
+        print magic_ratio
         while cur_loc < distance * 1 / 4:
-            track = random.randint(2, 4)
+            track = random.uniform(2*magic_ratio, 4*magic_ratio)
             sleep_time = random.randint(10, 50) / 1000.
             track_list.append([track, 0.5, sleep_time])
             cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops1!"
+                print track_list
+                return
         
         while cur_loc < distance * 2 / 4:
-            track = random.randint(4, 6)
+            track = random.uniform(4*magic_ratio, 6*magic_ratio)
             sleep_time = random.randint(10, 50) / 5000.
             track_list.append([track, 0.3, sleep_time])
             cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops2!"
+                print track_list
+                return
             
         while cur_loc < distance * 3 / 4:
-            track = random.randint(3, 5)
+            track = random.uniform(3*magic_ratio, 5*magic_ratio)
             sleep_time = random.randint(10, 50) / 4000.
             track_list.append([track, 0.6, sleep_time])
             cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops3!"
+                print track_list
+                return
         
         while cur_loc < distance + come_back:
-            track = random.randint(2, 4)
+            track = random.uniform(2*magic_ratio, 4*magic_ratio)
             sleep_time = random.randint(10, 50) / 500.
             track_list.append([track, 0.5, sleep_time])
             cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops4!"
+                print track_list
+                return
+        
+        #Final Adjustment
+        dist = 999
+        while abs(dist) > 1:
+            dist  = cur_loc - distance
+            if dist > 0:
+                track = -1 * random.uniform(0.5, 2)
+            else:
+                track = random.uniform(0.5, 2)
+            cur_loc = cur_loc + track
+            sleep_time = random.randint(10, 30) / 100.
+            track_list.append([track, 0.5, sleep_time])
+            if len(track_list) > 50:
+                print "whoops5!"
+                print track_list
+                return
+        return track_list
+    
+    def geetest_track_int(self, distance):
+        print "generate track..."
+        come_back = random.randint(-2,3)
+        cur_loc = 0
+        track_list = []
+        magic_ratio = 1
+        if distance < 100:
+            magic_ratio = 1
+        else:
+            magic_ratio = distance/100.
+        while cur_loc < distance * 1 / 4:
+            track = random.randint(math.floor(2*magic_ratio), math.floor(4*magic_ratio))
+            sleep_time = random.randint(10, 50) / 1000.
+            track_list.append([track, 0.5, sleep_time])
+            cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops1!"
+                print track_list
+                return
+        
+        while cur_loc < distance * 2 / 4:
+            track = random.randint(math.floor(4*magic_ratio), math.floor(6*magic_ratio))
+            sleep_time = random.randint(10, 50) / 5000.
+            track_list.append([track, 0.3, sleep_time])
+            cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops2!"
+                print track_list
+                return
+            
+        while cur_loc < distance * 3 / 4:
+            track = random.randint(math.floor(3*magic_ratio), math.floor(5*magic_ratio))
+            sleep_time = random.randint(10, 50) / 4000.
+            track_list.append([track, 0.6, sleep_time])
+            cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops3!"
+                print track_list
+                return
+        
+        while cur_loc < distance + come_back:
+            track = random.randint(math.floor(2*magic_ratio), math.floor(4*magic_ratio))
+            sleep_time = random.randint(10, 50) / 500.
+            track_list.append([track, 0.5, sleep_time])
+            cur_loc = cur_loc + track
+            if len(track_list) > 50:
+                print "whoops4!"
+                print track_list
+                return
         
         #Final Adjustment
         dist = 999
         while abs(dist) > 2:
-            dist  = cur_loc - target_x
+            dist  = cur_loc - distance
             if dist > 0:
-                track = -1 * random.randint(2, 4)
+                track = -1 * random.randint(0, 1)
             else:
-                track = random.randint(2, 3)
+                track = random.randint(0, 1)
+            cur_loc = cur_loc + track
             sleep_time = random.randint(10, 30) / 100.
             track_list.append([track, 0.5, sleep_time])
-                
-        
-        return 0
-        #return [[distance, 0.5, 1]]
+            if len(track_list) > 50:
+                print "whoops5!"
+                print track_list
+                return
+        return track_list
+
+
+    def geetest_track_test(self, distance):
+        return [[distance, 0.5, 1]]
         #crucial trace code was deleted
         #tip-->> 1. to generate the trace array randomly
         #        2. to collect trace array manually
@@ -170,8 +265,8 @@ class gsxt(object):
             print x, y ,t 
             ActionChains(self.br).move_to_element_with_offset(
                         to_element=element, 
-                        xoffset=x+22,
-                        yoffset=y+22).perform()
+                        xoffset=x+22.,
+                        yoffset=y+22.).perform()
             ActionChains(self.br).click_and_hold().perform()
             time.sleep(t)
         time.sleep(0.24)
@@ -197,6 +292,8 @@ class gsxt(object):
             img_url1, img_url2 = self.drag_pic()
             tracks = crack_picture(img_url1, img_url2).pictures_recover()
             tsb = self.emulate_track(tracks)
+            print "hahaha"
+            print tsb
             if '通过' in tsb:
                 time.sleep(1)
                 soup = BeautifulSoup(self.br.page_source, 'html.parser')
@@ -204,7 +301,7 @@ class gsxt(object):
                     print re.sub("\s+", "", sp.get_text().encode("utf-8"))
                     #print sp.get_text()
                 break
-            elif '吃' in tsb:
+            elif '吃' or '失败' in tsb:
                 time.sleep(5)
             else:
                 self.input_params(company)
@@ -216,10 +313,11 @@ class gsxt(object):
 
     def get_webdriver(self, name):
         if name.lower() == "phantomjs":
+            exe_path = '/home/guan/Software/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
             dcap = dict(DesiredCapabilities.PHANTOMJS)
             dcap["phantomjs.page.settings.userAgent"] = (
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36")
-            return webdriver.PhantomJS(desired_capabilities=dcap)
+            return webdriver.PhantomJS(desired_capabilities=dcap, executable_path=exe_path)
 
         elif name.lower() == "chrome":
             return webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
@@ -228,6 +326,7 @@ class gsxt(object):
 if __name__ == "__main__":
     #print crack_picture("http://static.geetest.com/pictures/gt/fc064fc73/fc064fc73.jpg", "http://static.geetest.com/pictures/gt/fc064fc73/bg/7ca363b09.jpg").pictures_recover()
     gsxt("chrome").run()
+    #gsxt("phantomjs").run()
 
 
 
