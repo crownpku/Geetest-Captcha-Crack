@@ -135,44 +135,45 @@ class crack_picture(object):
         magic_ratio = 1
         if distance < 100:
             magic_ratio = 1
-        else:
-            magic_ratio = distance/100.
+        #else:
+        #    magic_ratio = distance/100.
+        time_ratio = 1
         while cur_loc < distance * 1 / 4:
             track = random.randint(math.floor(2*magic_ratio), math.floor(4*magic_ratio))
-            sleep_time = random.randint(10, 50) / 1000.
+            sleep_time = random.randint(10, 50) / 1000.*time_ratio
             track_list.append([track, 0.5, sleep_time])
             cur_loc = cur_loc + track
-            if len(track_list) > 50:
+            if len(track_list) > 100:
                 print "whoops1!"
                 print track_list
                 return
         
         while cur_loc < distance * 2 / 4:
             track = random.randint(math.floor(4*magic_ratio), math.floor(6*magic_ratio))
-            sleep_time = random.randint(10, 50) / 5000.
+            sleep_time = random.randint(10, 50) / 5000.*time_ratio
             track_list.append([track, 0.3, sleep_time])
             cur_loc = cur_loc + track
-            if len(track_list) > 50:
+            if len(track_list) > 100:
                 print "whoops2!"
                 print track_list
                 return
             
         while cur_loc < distance * 3 / 4:
             track = random.randint(math.floor(3*magic_ratio), math.floor(5*magic_ratio))
-            sleep_time = random.randint(10, 50) / 4000.
+            sleep_time = random.randint(10, 50) / 4000.*time_ratio
             track_list.append([track, 0.6, sleep_time])
             cur_loc = cur_loc + track
-            if len(track_list) > 50:
+            if len(track_list) > 100:
                 print "whoops3!"
                 print track_list
                 return
         
         while cur_loc < distance + come_back:
             track = random.randint(math.floor(2*magic_ratio), math.floor(4*magic_ratio))
-            sleep_time = random.randint(10, 50) / 500.
+            sleep_time = random.randint(10, 50) / 500.*time_ratio
             track_list.append([track, 0.5, sleep_time])
             cur_loc = cur_loc + track
-            if len(track_list) > 50:
+            if len(track_list) > 100:
                 print "whoops4!"
                 print track_list
                 return
@@ -186,9 +187,9 @@ class crack_picture(object):
             else:
                 track = random.randint(0, 1)
             cur_loc = cur_loc + track
-            sleep_time = random.randint(10, 30) / 100.
+            sleep_time = random.randint(10, 30) / 100.*time_ratio
             track_list.append([track, 0.5, sleep_time])
-            if len(track_list) > 50:
+            if len(track_list) > 100:
                 print "whoops5!"
                 print track_list
                 return
@@ -279,29 +280,38 @@ class gsxt(object):
 
 
     def run(self):
-        for i in [u'招商银行', u'交通银行', u'中国银行']:
-            self.hack_geetest(i)
-            time.sleep(1)
+        while True:
+            for i in [u'招商银行', u'交通银行', u'中国银行']:
+                self.hack_geetest(i)
+                time.sleep(1)
         self.quit_webdriver()
 
 
     def hack_geetest(self, company=u"招商银行"):
         flag = True
         self.input_params(company)
+        fail_count = 0
+        outfile = open('track_record', 'a')
         while flag:
             img_url1, img_url2 = self.drag_pic()
             tracks = crack_picture(img_url1, img_url2).pictures_recover()
             tsb = self.emulate_track(tracks)
-            print "hahaha"
-            print tsb
+            #print "hahaha"
+            #print tsb
+            
             if '通过' in tsb:
-                time.sleep(1)
+                time.sleep(1)   
+                print >> outfile, 'True:' + str(tracks) 
                 soup = BeautifulSoup(self.br.page_source, 'html.parser')
                 for sp in soup.find_all("a", attrs={"class":"search_list_item"}):
                     print re.sub("\s+", "", sp.get_text().encode("utf-8"))
                     #print sp.get_text()
                 break
             elif '吃' or '失败' in tsb:
+                print >> outfile, 'False:' + str(tracks)
+                fail_count += 1
+                if fail_count > 4:
+                    flag = False
                 time.sleep(5)
             else:
                 self.input_params(company)
