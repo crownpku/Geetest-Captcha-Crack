@@ -6,6 +6,12 @@ Use Chrome as webdriver.
 
 Crack Gongshang website with Selenium and Chrome.
 
+TODO:
+
+[DONE] Modify code to record tracks (pass or fail)
+
+[TODO] Train a machine learning model to classify tracks, and use the model to generate better tracks.
+
 Reference: http://www.gsxt.gov.cn/index
 
 # Geetest_Mobile_Captcha_Crack
