@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 from bs4 import BeautifulSoup
+from subprocess import call
 debug = True
 
 class crack_picture(object):
@@ -335,7 +336,16 @@ class gsxt(object):
 
 if __name__ == "__main__":
     #print crack_picture("http://static.geetest.com/pictures/gt/fc064fc73/fc064fc73.jpg", "http://static.geetest.com/pictures/gt/fc064fc73/bg/7ca363b09.jpg").pictures_recover()
-    gsxt("chrome").run()
+    while True:
+        try:
+            gsxt("chrome").run()
+        except Exception as e:
+            print e
+            call("kill $(ps ax | grep chromedriver | awk '{print $1}')", shell=True)
+            sleep(30)
+            continue
+            
+    
     #gsxt("phantomjs").run()
 
 
