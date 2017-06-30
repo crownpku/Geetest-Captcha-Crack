@@ -342,7 +342,7 @@ if __name__ == "__main__":
         except Exception as e:
             print e
             call("kill $(ps ax | grep chromedriver | awk '{print $1}')", shell=True)
-            sleep(30)
+            time.sleep(30)
             continue
             
     
