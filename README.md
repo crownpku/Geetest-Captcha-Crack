@@ -1,3 +1,8 @@
+# Interesting idea:
+
+Use Deep Reinforcement Learning to solve this problem, just like what they did in [OpenAI Gym](https://gym.openai.com/) ??
+
+
 # Geetest_GSXT_Captcha_Crack
 
 geetest_crack_gsxt.py
